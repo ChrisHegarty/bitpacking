@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class Benchmark {
 
   private int[] ints;
-  private int[] intsOutput = new int[32];
+  private int[] intsOutput = new int[128];
   private long[] longs;
 
   final ForUtil forUtil = new ForUtil();
