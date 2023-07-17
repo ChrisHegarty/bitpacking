@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Benchmark)
 @Warmup(iterations = 3, time = 3)
-@Measurement(iterations = 5, time = 3)
+@Measurement(iterations = 3, time = 3)
 @Fork(value = 1, jvmArgsPrepend = {"--add-modules=jdk.incubator.vector"})
 public class Benchmark {
 
@@ -34,7 +34,9 @@ public class Benchmark {
   private int[] intsOutput = new int[32];
   private long[] longs;
 
-  final ForUtil forUtil = new ForUtil();
+  final ForUtil oldForUtil = new ForUtil();
+  final DefaultForUtil90 defaultForUtil90 = new DefaultForUtil90();
+  final PanamaForUtil90 panamaForUtil90 = new PanamaForUtil90();
 
   @Setup(Level.Trial)
   public void init() {
@@ -48,63 +50,78 @@ public class Benchmark {
     }
   }
 
+  // 1
   @org.openjdk.jmh.annotations.Benchmark
   public long[] encode1ForUtil() throws IOException {
-     forUtil.encode(longs, 1, longs);
+    oldForUtil.encode(longs, 1, longs);
      return longs;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
-  public int[] encode1SimdPack() throws IOException {
-    SimdBitPacking.simdPack(ints, intsOutput, 1);
+  public int[] encode1ForUtil90Default() throws IOException {
+    defaultForUtil90.encode(ints, 1, intsOutput);
     return intsOutput;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
+  public int[] encode1ForUtil90Panama() throws IOException {
+    panamaForUtil90.encode(ints, 1, intsOutput);
+    return intsOutput;
+  }
+
+  // 2
+  @org.openjdk.jmh.annotations.Benchmark
   public long[] encode2ForUtil() throws IOException {
-    forUtil.encode(longs, 2, longs);
+    oldForUtil.encode(longs, 2, longs);
     return longs;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
-  public int[] encode2SimdPack() throws IOException {
-    SimdBitPacking.simdPack(ints, intsOutput, 2);
+  public int[] encode2ForUtil90Default() throws IOException {
+    defaultForUtil90.encode(ints, 2, intsOutput);
     return intsOutput;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
+  public int[] encode2ForUtil90Panama() throws IOException {
+    panamaForUtil90.encode(ints, 2, intsOutput);
+    return intsOutput;
+  }
+
+  // 3
+  @org.openjdk.jmh.annotations.Benchmark
   public long[] encode3ForUtil() throws IOException {
-    forUtil.encode(longs, 3, longs);
+    oldForUtil.encode(longs, 3, longs);
     return longs;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
   public int[] encode3SimdPack() throws IOException {
-    SimdBitPacking.simdPack(ints, intsOutput, 3);
+    panamaForUtil90.encode(ints, 3, intsOutput);
     return intsOutput;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
   public long[] encode4ForUtil() throws IOException {
-    forUtil.encode(longs, 4, longs);
+    oldForUtil.encode(longs, 4, longs);
     return longs;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
   public int[] encode4SimdPack() throws IOException {
-    SimdBitPacking.simdPack(ints, intsOutput, 4);
+    panamaForUtil90.encode(ints, 4, intsOutput);
     return intsOutput;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
   public long[] encode5ForUtil() throws IOException {
-    forUtil.encode(longs, 5, longs);
+    oldForUtil.encode(longs, 5, longs);
     return longs;
   }
 
   @org.openjdk.jmh.annotations.Benchmark
   public int[] encode5SimdPack() throws IOException {
-    SimdBitPacking.simdPack(ints, intsOutput, 5);
+    panamaForUtil90.encode(ints, 5, intsOutput);
     return intsOutput;
   }
 

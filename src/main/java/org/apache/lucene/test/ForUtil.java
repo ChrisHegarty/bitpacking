@@ -61,7 +61,7 @@ final class ForUtil {
         return expandMask8((1L << bitsPerValue) - 1);
     }
 
-    private static void expand8(long[] arr) {
+    public static void expand8(long[] arr) {
         for (int i = 0; i < 16; ++i) {
             long l = arr[i];
             arr[i] = (l >>> 56) & 0xFFL;
